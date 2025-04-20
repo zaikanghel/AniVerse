@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player';
 import { 
   Play, Pause, Volume2, VolumeX, Settings, Maximize, 
   Minimize, CaptionsOff, ChevronRight, ChevronLeft,
-  RotateCcw, Smartphone, X
+  RotateCcw, Smartphone, X, Tv
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Slider } from '@/components/ui/slider';
@@ -70,6 +70,9 @@ export default function VideoPlayer({
   const [nextEpisodeCountdown, setNextEpisodeCountdown] = useState(10);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [showSpeedMenu, setShowSpeedMenu] = useState(false);
+  const [selectedQuality, setSelectedQuality] = useState('auto');
+  const [showQualityMenu, setShowQualityMenu] = useState(false);
+  const [availableQualities, setAvailableQualities] = useState(['auto', '1080p', '720p', '480p', '360p']);
   const playerRef = useRef<ReactPlayer>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -261,6 +264,31 @@ export default function VideoPlayer({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [showSpeedMenu]);
+  
+  // Handle click outside for quality menu
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (showQualityMenu) {
+        const target = event.target as Node;
+        const qualityMenuButton = document.querySelector('.quality-menu-button');
+        const qualityMenu = document.querySelector('.quality-menu');
+        
+        if (
+          qualityMenuButton && 
+          qualityMenu && 
+          !qualityMenuButton.contains(target) && 
+          !qualityMenu.contains(target)
+        ) {
+          setShowQualityMenu(false);
+        }
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showQualityMenu]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -361,6 +389,25 @@ export default function VideoPlayer({
   const handlePlaybackSpeedChange = (speed: number) => {
     setPlaybackSpeed(speed);
     setShowSpeedMenu(false);
+  };
+  
+  const handleQualityChange = (quality: string) => {
+    setSelectedQuality(quality);
+    setShowQualityMenu(false);
+    
+    // In a real implementation, you would adjust the video source based on the selected quality
+    // For example, by switching to a different resolution version of the video
+    console.log(`Quality changed to: ${quality}`);
+    
+    // We would typically need to save the current time, change the source, then seek back
+    const currentTime = playerRef.current?.getCurrentTime() || 0;
+    
+    // After source is changed (happening in a real implementation), seek back to the same position
+    setTimeout(() => {
+      if (playerRef.current) {
+        playerRef.current.seekTo(currentTime);
+      }
+    }, 100);
   };
 
   const handleProgress = (state: { played: number; playedSeconds: number; loaded: number; loadedSeconds: number }) => {
@@ -834,9 +881,35 @@ export default function VideoPlayer({
               </button>
             )}
             
-            <button className="text-white hover:text-secondary transition duration-200 hidden sm:block">
-              <CaptionsOff className="h-5 w-5" />
-            </button>
+            <div className="relative group">
+              <button 
+                className="text-white hover:text-secondary transition duration-200 hidden sm:flex items-center space-x-1 quality-menu-button"
+                onClick={() => setShowQualityMenu(!showQualityMenu)}
+              >
+                <Tv className="h-5 w-5" />
+                <span className="text-xs">{selectedQuality}</span>
+              </button>
+              
+              {/* Quality Menu */}
+              {showQualityMenu && (
+                <div className="absolute bottom-10 right-0 bg-gray-900 rounded-md shadow-lg p-2 z-50 min-w-[120px] quality-menu">
+                  <div className="text-xs text-gray-400 mb-1 px-2">Quality</div>
+                  {availableQualities.map(quality => (
+                    <button
+                      key={quality}
+                      onClick={() => handleQualityChange(quality)}
+                      className={`w-full text-left px-3 py-1 text-sm rounded-sm ${
+                        selectedQuality === quality 
+                          ? 'bg-secondary text-white' 
+                          : 'text-white hover:bg-gray-800'
+                      }`}
+                    >
+                      {quality}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             
             <div className="relative group">
               <button 
