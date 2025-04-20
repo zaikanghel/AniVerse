@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <!-- Background (optional, transparent for now) -->
+  <rect width="600" height="600" fill="transparent"/>
+  
+  <!-- Character face/head outline -->
+  <path d="M300,100 C360,100 410,150 420,210 C430,270 420,340 380,380 C340,420 260,420 220,380 C180,340 170,270 180,210 C190,150 240,100 300,100 Z" fill="#E46E43" stroke="#1F333D" stroke-width="10"/>
+  
+  <!-- Hair -->
+  <path d="M300,100 C360,100 410,130 435,190 C410,170 380,160 350,170 C320,120 280,130 250,170 C220,160 190,170 165,190 C190,130 240,100 300,100 Z" fill="#E46E43" stroke="#1F333D" stroke-width="10"/>
+  <path d="M250,170 C270,150 330,150 350,170 C330,130 270,130 250,170 Z" fill="#E46E43" stroke="#1F333D" stroke-width="8"/>
+  
+  <!-- Bangs -->
+  <path d="M300,140 C320,140 330,150 335,160 C330,155 320,150 300,150 C280,150 270,155 265,160 C270,150 280,140 300,140 Z" fill="#E46E43" stroke="#1F333D" stroke-width="8"/>
+  
+  <!-- Hair side locks -->
+  <path d="M180,210 C170,220 165,240 165,260 C160,200 190,180 205,175 C190,190 185,210 180,210 Z" fill="#E46E43" stroke="#1F333D" stroke-width="8"/>
+  <path d="M420,210 C430,220 435,240 435,260 C440,200 410,180 395,175 C410,190 415,210 420,210 Z" fill="#E46E43" stroke="#1F333D" stroke-width="8"/>
+  
+  <!-- Eyes -->
+  <ellipse cx="255" cy="240" rx="30" ry="35" fill="white" stroke="#1F333D" stroke-width="6"/>
+  <ellipse cx="345" cy="240" rx="30" ry="35" fill="white" stroke="#1F333D" stroke-width="6"/>
+  
+  <!-- Pupils -->
+  <ellipse cx="255" cy="240" rx="15" ry="20" fill="#1F333D"/>
+  <ellipse cx="345" cy="240" rx="15" ry="20" fill="#1F333D"/>
+  
+  <!-- Eye highlights -->
+  <ellipse cx="245" cy="230" rx="5" ry="8" fill="white"/>
+  <ellipse cx="335" cy="230" rx="5" ry="8" fill="white"/>
+  
+  <!-- Nose -->
+  <path d="M300,255 L295,275 L305,275 Z" fill="#1F333D"/>
+  
+  <!-- Mouth -->
+  <path d="M270,310 C280,325 320,325 330,310" fill="none" stroke="#1F333D" stroke-width="6" stroke-linecap="round"/>
+  
+  <!-- Neck -->
+  <path d="M275,380 C275,400 280,420 300,420 C320,420 325,400 325,380" fill="#EDBDAA" stroke="#1F333D" stroke-width="8"/>
+  
+  <!-- Text "ANIVERSE" -->
+  <text x="50" y="500" fill="#F8F5E6" stroke="#E46E43" stroke-width="12" font-family="Arial, sans-serif" font-weight="bold" font-size="80" text-anchor="middle" dominant-baseline="middle">ANIVERSE</text>
+</svg>

@@ -42,7 +42,8 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <span className="text-2xl font-bold font-sans text-white">Anime<span className="text-accent">Verse</span></span>
+              <img src="/images/aniverse-logo.svg" alt="AniVerse Logo" className="h-10 mr-2" />
+              <span className="text-2xl font-bold font-sans text-white">Ani<span className="text-accent">Verse</span></span>
             </Link>
             <div className="hidden md:flex ml-10 space-x-8">
               <NavLink href="/" label="Home" icon={<Layout className="h-4 w-4 mr-1" />} />

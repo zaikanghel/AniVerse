@@ -240,9 +240,12 @@ export default function AuthPage() {
           {/* Right side - Hero content */}
           <div className="w-full max-w-md lg:max-w-lg">
             <div className="flex flex-col space-y-6">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-accent text-transparent bg-clip-text">
-                AnimeVerse
-              </h1>
+              <div className="flex items-center gap-4 mb-4">
+                <img src="/images/aniverse-logo.svg" alt="AniVerse Logo" className="h-16" />
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-accent text-transparent bg-clip-text">
+                  AniVerse
+                </h1>
+              </div>
               <p className="text-xl text-gray-300">
                 Your ultimate anime streaming platform that lets you discover, track, and enjoy your favorite anime series and movies.
               </p>
