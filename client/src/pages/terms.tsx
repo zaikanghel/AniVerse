@@ -79,7 +79,7 @@ export default function TermsOfService() {
         
         <h2>6. Limitation of Liability</h2>
         <p>
-          In no event shall AnimeVerse, nor its directors, employees, partners, agents, suppliers, or affiliates, 
+          In no event shall AniVerse, nor its directors, employees, partners, agents, suppliers, or affiliates, 
           be liable for any indirect, incidental, special, consequential or punitive damages, including without 
           limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access 
           to or use of or inability to access or use the Service.
