@@ -68,6 +68,8 @@ export default function VideoPlayer({
   const [showSkipIntro, setShowSkipIntro] = useState(false);
   const [showNextEpisode, setShowNextEpisode] = useState(false);
   const [nextEpisodeCountdown, setNextEpisodeCountdown] = useState(10);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [showSpeedMenu, setShowSpeedMenu] = useState(false);
   const playerRef = useRef<ReactPlayer>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -234,6 +236,31 @@ export default function VideoPlayer({
       }
     };
   }, [playing]);
+  
+  // Handle click outside for speed menu
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (showSpeedMenu) {
+        const target = event.target as Node;
+        const speedMenuButton = document.querySelector('.speed-menu-button');
+        const speedMenu = document.querySelector('.speed-menu');
+        
+        if (
+          speedMenuButton && 
+          speedMenu && 
+          !speedMenuButton.contains(target) && 
+          !speedMenu.contains(target)
+        ) {
+          setShowSpeedMenu(false);
+        }
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showSpeedMenu]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -290,13 +317,33 @@ export default function VideoPlayer({
           handleNextEpisode();
         }
       }
+      // Playback speed control - increase
+      else if (e.key === ']' || (e.key === '+' && e.shiftKey)) {
+        const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
+        const currentIndex = speeds.indexOf(playbackSpeed);
+        if (currentIndex < speeds.length - 1) {
+          setPlaybackSpeed(speeds[currentIndex + 1]);
+        }
+      }
+      // Playback speed control - decrease
+      else if (e.key === '[' || (e.key === '-' && e.shiftKey)) {
+        const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
+        const currentIndex = speeds.indexOf(playbackSpeed);
+        if (currentIndex > 0) {
+          setPlaybackSpeed(speeds[currentIndex - 1]);
+        }
+      }
+      // Playback speed reset to normal
+      else if (e.key === '\\' || e.key === '0') {
+        setPlaybackSpeed(1);
+      }
     };
 
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onFullscreenToggle, volume, hasIntro, showSkipIntro, nextEpisodeId, onNavigateToNextEpisode, duration]);
+  }, [onFullscreenToggle, volume, hasIntro, showSkipIntro, nextEpisodeId, onNavigateToNextEpisode, duration, playbackSpeed]);
 
   const handlePlayPause = () => {
     setPlaying(!playing);
@@ -309,6 +356,11 @@ export default function VideoPlayer({
 
   const handleVolumeToggle = () => {
     setMuted(!muted);
+  };
+  
+  const handlePlaybackSpeedChange = (speed: number) => {
+    setPlaybackSpeed(speed);
+    setShowSpeedMenu(false);
   };
 
   const handleProgress = (state: { played: number; playedSeconds: number; loaded: number; loadedSeconds: number }) => {
@@ -645,6 +697,7 @@ export default function VideoPlayer({
         playing={playing}
         volume={volume}
         muted={muted}
+        playbackRate={playbackSpeed}
         onProgress={handleProgress}
         onDuration={handleDuration}
         // Disable downloads and context menu for video element
@@ -785,9 +838,35 @@ export default function VideoPlayer({
               <CaptionsOff className="h-5 w-5" />
             </button>
             
-            <button className="text-white hover:text-secondary transition duration-200 hidden sm:block">
-              <Settings className="h-5 w-5" />
-            </button>
+            <div className="relative group">
+              <button 
+                className="text-white hover:text-secondary transition duration-200 hidden sm:flex items-center space-x-1 speed-menu-button"
+                onClick={() => setShowSpeedMenu(!showSpeedMenu)}
+              >
+                <Settings className="h-5 w-5" />
+                <span className="text-xs">{playbackSpeed}x</span>
+              </button>
+              
+              {/* Playback Speed Menu */}
+              {showSpeedMenu && (
+                <div className="absolute bottom-10 right-0 bg-gray-900 rounded-md shadow-lg p-2 z-50 min-w-[120px] speed-menu">
+                  <div className="text-xs text-gray-400 mb-1 px-2">Playback Speed</div>
+                  {[0.5, 0.75, 1, 1.25, 1.5, 2].map(speed => (
+                    <button
+                      key={speed}
+                      onClick={() => handlePlaybackSpeedChange(speed)}
+                      className={`w-full text-left px-3 py-1 text-sm rounded-sm ${
+                        playbackSpeed === speed 
+                          ? 'bg-secondary text-white' 
+                          : 'text-white hover:bg-gray-800'
+                      }`}
+                    >
+                      {speed}x
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             
             <button 
               className="text-white hover:text-secondary transition duration-200"
