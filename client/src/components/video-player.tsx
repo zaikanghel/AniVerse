@@ -128,6 +128,16 @@ export default function VideoPlayer({
       }
     };
   }, [playing, duration, seeking, episodeId, animeId, title, thumbnail, episodeNumber]);
+  
+  // Clean up timers when component unmounts
+  useEffect(() => {
+    return () => {
+      // Clear next episode timer if it exists
+      if (nextEpisodeTimerRef.current) {
+        clearInterval(nextEpisodeTimerRef.current);
+      }
+    };
+  }, []);
 
   // Handle fullscreen changes
   useEffect(() => {
@@ -282,6 +292,51 @@ export default function VideoPlayer({
   const handleProgress = (state: { played: number; playedSeconds: number; loaded: number; loadedSeconds: number }) => {
     if (!seeking) {
       setPlayed(state.played);
+      
+      // Check if we're near the end to show next episode prompt
+      if (nextEpisodeId && onNavigateToNextEpisode && duration > 0) {
+        const timeRemaining = duration - state.playedSeconds;
+        if (timeRemaining <= 30 && !showNextEpisode) {
+          // Show next episode prompt with 10 second countdown
+          setShowNextEpisode(true);
+          setNextEpisodeCountdown(10);
+          
+          // Start countdown timer for next episode
+          if (nextEpisodeTimerRef.current) {
+            clearInterval(nextEpisodeTimerRef.current);
+          }
+          
+          nextEpisodeTimerRef.current = setInterval(() => {
+            setNextEpisodeCountdown(prev => {
+              if (prev <= 1) {
+                // Time's up, move to next episode
+                if (nextEpisodeTimerRef.current) {
+                  clearInterval(nextEpisodeTimerRef.current);
+                }
+                if (onNavigateToNextEpisode) {
+                  onNavigateToNextEpisode();
+                }
+                return 0;
+              }
+              return prev - 1;
+            });
+          }, 1000);
+        }
+      }
+      
+      // Check if we're in the intro period to show skip intro button
+      if (hasIntro && introStartTime !== undefined && introEndTime !== undefined) {
+        const currentSeconds = state.playedSeconds;
+        if (currentSeconds >= introStartTime && currentSeconds <= introEndTime) {
+          if (!showSkipIntro) {
+            setShowSkipIntro(true);
+          }
+        } else {
+          if (showSkipIntro) {
+            setShowSkipIntro(false);
+          }
+        }
+      }
     }
   };
 
@@ -426,6 +481,43 @@ export default function VideoPlayer({
       console.log('Starting playback from beginning');
     }, 100);
   };
+  
+  // Handle skipping intro
+  const handleSkipIntro = () => {
+    if (playerRef.current && introEndTime) {
+      // Skip to the end of the intro
+      playerRef.current.seekTo(introEndTime, 'seconds');
+      console.log('Skipped intro to:', introEndTime);
+      setShowSkipIntro(false);
+    }
+  };
+  
+  // Handle navigating to next episode
+  const handleNextEpisode = () => {
+    // Clear the next episode timer if it exists
+    if (nextEpisodeTimerRef.current) {
+      clearInterval(nextEpisodeTimerRef.current);
+    }
+    
+    // Hide the next episode prompt
+    setShowNextEpisode(false);
+    
+    // Call the navigation callback provided by the parent component
+    if (onNavigateToNextEpisode) {
+      console.log('Navigating to next episode');
+      onNavigateToNextEpisode();
+    }
+  };
+  
+  // Handle canceling next episode autoplay
+  const handleCancelNextEpisode = () => {
+    // Clear the timer and hide the prompt
+    if (nextEpisodeTimerRef.current) {
+      clearInterval(nextEpisodeTimerRef.current);
+      nextEpisodeTimerRef.current = null;
+    }
+    setShowNextEpisode(false);
+  };
 
   return (
     <div 
@@ -438,6 +530,47 @@ export default function VideoPlayer({
         }
       )}
     >
+      {/* Skip Intro Button */}
+      {showSkipIntro && (
+        <button
+          onClick={handleSkipIntro}
+          className="absolute top-24 right-4 z-20 bg-black bg-opacity-70 text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-all duration-200 flex items-center space-x-2"
+        >
+          <RotateCcw className="h-4 w-4" />
+          <span>Skip Intro</span>
+        </button>
+      )}
+      
+      {/* Next Episode Overlay */}
+      {showNextEpisode && nextEpisodeId && onNavigateToNextEpisode && (
+        <div className="absolute bottom-24 right-4 z-20 bg-black bg-opacity-80 text-white p-3 rounded-md shadow-lg max-w-xs">
+          <div className="flex justify-between items-center mb-2">
+            <h4 className="text-sm font-medium">Next Episode</h4>
+            <button 
+              onClick={handleCancelNextEpisode}
+              className="text-gray-400 hover:text-white"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-xs text-gray-300">Playing in {nextEpisodeCountdown}s</div>
+            <button
+              onClick={handleNextEpisode}
+              className="bg-accent hover:bg-accent/90 text-white text-xs px-3 py-1 rounded-md transition-colors"
+            >
+              Play Now
+            </button>
+          </div>
+          <div className="w-full bg-gray-700 rounded-full h-1">
+            <div 
+              className="bg-accent h-1 rounded-full transition-all duration-1000"
+              style={{ width: `${(1 - nextEpisodeCountdown / 10) * 100}%` }}
+            />
+          </div>
+        </div>
+      )}
+      
       {/* Resume Prompt Overlay */}
       {showResumePrompt && savedProgress && (
         <div className="absolute inset-0 z-10 bg-black bg-opacity-70 flex items-center justify-center">
