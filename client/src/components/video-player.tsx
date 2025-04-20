@@ -312,8 +312,10 @@ export default function VideoPlayer({
                 // Time's up, move to next episode
                 if (nextEpisodeTimerRef.current) {
                   clearInterval(nextEpisodeTimerRef.current);
+                  nextEpisodeTimerRef.current = null;
                 }
                 if (onNavigateToNextEpisode) {
+                  console.log('Auto-navigating to next episode when countdown ends');
                   onNavigateToNextEpisode();
                 }
                 return 0;
@@ -644,6 +646,11 @@ export default function VideoPlayer({
                 }
               }
             }, 200);
+          } else if (!showResumePrompt) {
+            // For a new episode or when there's no saved progress,
+            // automatically start playing if we're not showing the resume prompt
+            console.log('Auto-starting playback for new episode');
+            setPlaying(true);
           }
         }}
         style={{ backgroundColor: '#000' }}

@@ -98,7 +98,12 @@ export default function Watch({ id }: WatchProps) {
             animeId={episode.animeId}
             episodeNumber={episode.number}
             nextEpisodeId={nextEpisodes.length > 0 ? nextEpisodes[0].id : undefined}
-            onNavigateToNextEpisode={nextEpisodes.length > 0 ? () => setLocation(`/watch/${nextEpisodes[0].id}`) : undefined}
+            onNavigateToNextEpisode={nextEpisodes.length > 0 ? 
+              () => {
+                console.log('Auto-navigating to next episode');
+                // First navigate to the next episode
+                setLocation(`/watch/${nextEpisodes[0].id}`);
+              } : undefined}
             hasIntro={true}
             introStartTime={20}
             introEndTime={90}
