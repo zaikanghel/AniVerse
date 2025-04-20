@@ -30,6 +30,11 @@ type VideoPlayerProps = {
   episodeId: string;
   animeId: string;
   episodeNumber: number;
+  nextEpisodeId?: string;
+  onNavigateToNextEpisode?: () => void;
+  hasIntro?: boolean;
+  introStartTime?: number;
+  introEndTime?: number;
 };
 
 export default function VideoPlayer({ 
@@ -40,7 +45,12 @@ export default function VideoPlayer({
   onFullscreenToggle,
   episodeId,
   animeId,
-  episodeNumber
+  episodeNumber,
+  nextEpisodeId,
+  onNavigateToNextEpisode,
+  hasIntro = false,
+  introStartTime = 0,
+  introEndTime = 90
 }: VideoPlayerProps) {
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
@@ -55,10 +65,14 @@ export default function VideoPlayer({
   const [showResumePrompt, setShowResumePrompt] = useState(false);
   const [savedProgress, setSavedProgress] = useState<number | null>(null);
   const [hasAutoSeeked, setHasAutoSeeked] = useState(false);
+  const [showSkipIntro, setShowSkipIntro] = useState(false);
+  const [showNextEpisode, setShowNextEpisode] = useState(false);
+  const [nextEpisodeCountdown, setNextEpisodeCountdown] = useState(10);
   const playerRef = useRef<ReactPlayer>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const progressSaveIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const nextEpisodeTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Detect mobile device
   useEffect(() => {
@@ -192,16 +206,57 @@ export default function VideoPlayer({
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Play/Pause
       if (e.key === ' ' || e.key === 'k') {
         setPlaying(prev => !prev);
-      } else if (e.key === 'm') {
+      } 
+      // Volume controls
+      else if (e.key === 'm') {
         setMuted(prev => !prev);
-      } else if (e.key === 'ArrowLeft') {
-        handleRewind();
+      } else if (e.key === 'ArrowUp' && !e.shiftKey) {
+        setVolume(prev => Math.min(prev + 0.1, 1));
+        setMuted(false);
+      } else if (e.key === 'ArrowDown' && !e.shiftKey) {
+        setVolume(prev => Math.max(prev - 0.1, 0));
+        if (volume <= 0.1) setMuted(true);
+      } 
+      // Skip backward/forward
+      else if (e.key === 'ArrowLeft') {
+        if (e.shiftKey) {
+          // Shift + Left Arrow: skip back 30 seconds
+          if (playerRef.current) {
+            const currentTime = playerRef.current.getCurrentTime();
+            playerRef.current.seekTo(Math.max(currentTime - 30, 0));
+          }
+        } else {
+          handleRewind(); // Regular rewind (10s)
+        }
       } else if (e.key === 'ArrowRight') {
-        handleFastForward();
-      } else if (e.key === 'f') {
+        if (e.shiftKey) {
+          // Shift + Right Arrow: skip forward 30 seconds
+          if (playerRef.current) {
+            const currentTime = playerRef.current.getCurrentTime();
+            playerRef.current.seekTo(Math.min(currentTime + 30, duration));
+          }
+        } else {
+          handleFastForward(); // Regular fast forward (10s)
+        }
+      } 
+      // Fullscreen toggle
+      else if (e.key === 'f') {
         onFullscreenToggle();
+      } 
+      // Skip intro (if in intro period and has intro defined)
+      else if (e.key === 's') {
+        if (hasIntro && showSkipIntro) {
+          handleSkipIntro();
+        }
+      }
+      // Next episode shortcut (if available)
+      else if (e.key === 'n') {
+        if (nextEpisodeId && onNavigateToNextEpisode) {
+          handleNextEpisode();
+        }
       }
     };
 
@@ -209,7 +264,7 @@ export default function VideoPlayer({
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onFullscreenToggle]);
+  }, [onFullscreenToggle, volume, hasIntro, showSkipIntro, nextEpisodeId, onNavigateToNextEpisode, duration]);
 
   const handlePlayPause = () => {
     setPlaying(!playing);
