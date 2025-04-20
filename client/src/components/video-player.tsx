@@ -73,9 +73,11 @@ export default function VideoPlayer({
     // Only check for saved progress if we have an episode ID
     if (episodeId) {
       const progress = getWatchProgress(episodeId);
+      console.log('Retrieved watch progress for episode:', episodeId, progress);
       if (progress && progress.position > 5 && progress.position < progress.duration - 10) {
         setSavedProgress(progress.position);
         setShowResumePrompt(true);
+        console.log('Setting saved progress to:', progress.position);
       }
     }
   }, [episodeId]);
@@ -306,8 +308,26 @@ export default function VideoPlayer({
   // Handle resuming playback from saved position
   const handleResumePlayback = () => {
     if (savedProgress && playerRef.current) {
-      playerRef.current.seekTo(savedProgress);
+      console.log('Attempting to resume at position:', savedProgress);
+      
+      // Ensure player is ready before seeking
+      if (playerRef.current.getInternalPlayer()) {
+        console.log('Internal player ready, seeking to position');
+        playerRef.current.seekTo(savedProgress, 'seconds');
+      } else {
+        console.log('Internal player not ready, using timeout');
+        // If player not ready, use a timeout to try again
+        setTimeout(() => {
+          console.log('Retrying seek after timeout');
+          if (playerRef.current) {
+            playerRef.current.seekTo(savedProgress, 'seconds');
+          }
+        }, 1000);
+      }
+      
       setPlaying(true);
+    } else {
+      console.log('No saved progress or player ref available');
     }
     setShowResumePrompt(false);
   };
@@ -375,6 +395,13 @@ export default function VideoPlayer({
         muted={muted}
         onProgress={handleProgress}
         onDuration={handleDuration}
+        onReady={() => {
+          console.log('ReactPlayer is ready');
+          if (savedProgress && !showResumePrompt && playerRef.current) {
+            console.log('Auto seeking to saved position on ready:', savedProgress);
+            playerRef.current.seekTo(savedProgress, 'seconds');
+          }
+        }}
         style={{ backgroundColor: '#000' }}
         light={!playing ? thumbnail : false}
         playIcon={

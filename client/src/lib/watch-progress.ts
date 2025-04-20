@@ -17,8 +17,11 @@ const WATCH_PROGRESS_KEY = 'aniverse_watch_progress';
  */
 export function saveWatchProgress(progress: Omit<WatchProgress, 'timestamp'>): void {
   try {
+    console.log('Saving watch progress:', progress);
+    
     // Only save if more than 5 seconds watched and not at the very end
     if (progress.position < 5 || (progress.duration > 0 && progress.position >= progress.duration - 10)) {
+      console.log('Position too early or too late, not saving', progress.position, progress.duration);
       return;
     }
 
@@ -26,12 +29,16 @@ export function saveWatchProgress(progress: Omit<WatchProgress, 'timestamp'>): v
       localStorage.getItem(WATCH_PROGRESS_KEY) || '{}'
     );
 
-    existingData[progress.episodeId] = {
+    const newProgress = {
       ...progress,
       timestamp: Date.now(),
     };
+    
+    existingData[progress.episodeId] = newProgress;
+    console.log('Saving to localStorage:', newProgress);
 
     localStorage.setItem(WATCH_PROGRESS_KEY, JSON.stringify(existingData));
+    console.log('Watch progress saved successfully');
   } catch (error) {
     console.error('Failed to save watch progress:', error);
   }
