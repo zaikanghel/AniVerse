@@ -73,8 +73,11 @@ export default function VideoPlayer({
   const [selectedQuality, setSelectedQuality] = useState('auto');
   const [showQualityMenu, setShowQualityMenu] = useState(false);
   const [availableQualities, setAvailableQualities] = useState(['auto', '1080p', '720p', '480p', '360p']);
+  const [showThumbnailPreview, setShowThumbnailPreview] = useState(false);
+  const [previewPosition, setPreviewPosition] = useState({ x: 0, time: 0 });
   const playerRef = useRef<ReactPlayer>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const progressSaveIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const nextEpisodeTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -473,6 +476,30 @@ export default function VideoPlayer({
     if (playerRef.current) {
       playerRef.current.seekTo(played);
     }
+    
+    // Hide thumbnail preview when seeking ends
+    setShowThumbnailPreview(false);
+  };
+  
+  const handleProgressMouseMove = (e: React.MouseEvent) => {
+    if (progressBarRef.current && duration) {
+      const rect = progressBarRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percentage = Math.min(Math.max(x / rect.width, 0), 1);
+      const timeAtPosition = percentage * duration;
+      
+      setPreviewPosition({ 
+        x: Math.min(Math.max(x, 0), rect.width),
+        time: timeAtPosition
+      });
+      setShowThumbnailPreview(true);
+    }
+  };
+  
+  const handleProgressMouseLeave = () => {
+    if (!seeking) {
+      setShowThumbnailPreview(false);
+    }
   };
 
   const handleDuration = (duration: number) => {
@@ -802,20 +829,42 @@ export default function VideoPlayer({
           { "opacity-0": !showControls && playing, "opacity-100": showControls || !playing }
         )}
       >
-        {/* Progress bar */}
+        {/* Progress bar with thumbnail preview */}
         <div 
-          className="video-progress mb-2 cursor-pointer rounded overflow-hidden h-1 bg-gray-700"
+          ref={progressBarRef}
+          className="video-progress mb-2 cursor-pointer rounded overflow-hidden h-1 bg-gray-700 relative"
           onClick={(e) => {
             const rect = e.currentTarget.getBoundingClientRect();
             const percent = (e.clientX - rect.left) / rect.width;
             setPlayed(percent);
             playerRef.current?.seekTo(percent);
           }}
+          onMouseMove={handleProgressMouseMove}
+          onMouseLeave={handleProgressMouseLeave}
         >
           <div 
             className="video-progress-filled bg-accent h-full"
             style={{ width: `${played * 100}%` }}
           />
+          
+          {/* Thumbnail preview */}
+          {showThumbnailPreview && (
+            <div 
+              className="absolute bottom-4 bg-black rounded-md overflow-hidden shadow-lg z-20 transform -translate-x-1/2"
+              style={{ left: `${previewPosition.x}px` }}
+            >
+              <div className="w-32 h-20 bg-gray-800 relative">
+                <img 
+                  src={thumbnail} 
+                  alt="Preview" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute bottom-0 w-full bg-black/70 text-white text-xs py-1 text-center">
+                  {formatTime(previewPosition.time)}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         
         {/* Controls */}
