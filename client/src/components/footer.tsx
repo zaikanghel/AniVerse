@@ -23,8 +23,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <a href="/" className="flex items-center mb-4">
-              <img src="/images/aniverse-logo.svg" alt="aniverse Logo" className="h-10 mr-2" />
-              <span className="text-2xl font-bold font-sans text-white">ani<span className="text-accent">verse</span></span>
+              <div className="h-10 mr-2 flex items-center">
+                <span className="text-2xl font-bold font-sans text-white">ANI<span className="text-accent">VERSE</span></span>
+              </div>
             </a>
             <p className="text-gray-400 mb-4">Your gateway to the best anime experience online. Watch high-quality anime anytime, anywhere.</p>
             <div className="flex space-x-4">
