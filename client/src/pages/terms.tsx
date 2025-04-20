@@ -5,7 +5,7 @@ export default function TermsOfService() {
       
       <div className="prose prose-lg dark:prose-invert max-w-none">
         <p className="lead">
-          Welcome to AnimeVerse. These Terms of Service govern your use of the AnimeVerse website and services.
+          Welcome to AniVerse. These Terms of Service govern your use of the AniVerse website and services.
           By accessing or using our platform, you agree to be bound by these Terms.
         </p>
         
@@ -58,12 +58,12 @@ export default function TermsOfService() {
         
         <h2>4. Intellectual Property</h2>
         <p>
-          The Service and its original content, features, and functionality are owned by AnimeVerse and are 
+          The Service and its original content, features, and functionality are owned by AniVerse and are 
           protected by international copyright, trademark, patent, trade secret, and other intellectual 
           property or proprietary rights laws.
         </p>
         <p>
-          AnimeVerse respects the intellectual property rights of others. If you believe that material available 
+          AniVerse respects the intellectual property rights of others. If you believe that material available 
           on or through our Service infringes upon your copyright, please refer to our DMCA Policy.
         </p>
         

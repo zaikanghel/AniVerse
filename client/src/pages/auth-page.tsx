@@ -108,7 +108,7 @@ export default function AuthPage() {
                 <CardDescription className="text-center">
                   {activeTab === 'login' 
                     ? 'Sign in to your account to continue' 
-                    : 'Join AnimeVerse to track your favorite anime'}
+                    : 'Join AniVerse to track your favorite anime'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
