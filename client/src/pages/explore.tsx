@@ -53,7 +53,7 @@ export default function Explore() {
   });
 
   return (
-    <div className="container mx-auto px-4 py-28 min-h-screen">
+    <div className="container mx-auto px-4 pt-24 pb-10 min-h-screen">
       <h1 className="text-3xl font-bold mb-8">Explore Anime</h1>
       
       <div className="bg-gray-800 rounded-lg p-4 mb-8">

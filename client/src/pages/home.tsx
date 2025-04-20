@@ -13,7 +13,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="pt-16">
+    <main className="pt-20">
       <HeroSlider />
       <GenreFilter />
       <TrendingAnime />

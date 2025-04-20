@@ -74,7 +74,7 @@ export default function Genres() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-28 min-h-screen">
+    <div className="container mx-auto px-4 pt-24 pb-10 min-h-screen">
       <h1 className="text-3xl font-bold mb-8">Explore Genres</h1>
       
       <div className="mb-10">

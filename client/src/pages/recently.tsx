@@ -17,7 +17,7 @@ export default function RecentlyAdded() {
   });
 
   return (
-    <div className="container mx-auto px-4 py-28 min-h-screen">
+    <div className="container mx-auto px-4 pt-24 pb-10 min-h-screen">
       <h1 className="text-3xl font-bold mb-8">Recently Added Episodes</h1>
       
       {isLoading ? (

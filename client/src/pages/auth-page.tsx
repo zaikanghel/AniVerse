@@ -95,7 +95,7 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-background py-12">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-background pt-24 pb-12">
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row gap-8 items-center justify-center">
           {/* Left side - Form */}
