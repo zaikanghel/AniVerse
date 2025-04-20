@@ -37,6 +37,6 @@
   <!-- Neck -->
   <path d="M275,380 C275,400 280,420 300,420 C320,420 325,400 325,380" fill="#EDBDAA" stroke="#1F333D" stroke-width="8"/>
   
-  <!-- Text "ANIVERSE" -->
-  <text x="50" y="500" fill="#F8F5E6" stroke="#E46E43" stroke-width="12" font-family="Arial, sans-serif" font-weight="bold" font-size="80" text-anchor="middle" dominant-baseline="middle">ANIVERSE</text>
+  <!-- Text "aniverse" -->
+  <text x="50" y="500" fill="#F8F5E6" stroke="#E46E43" stroke-width="12" font-family="Arial, sans-serif" font-weight="bold" font-size="80" text-anchor="middle" dominant-baseline="middle">aniverse</text>
 </svg>

@@ -23,8 +23,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <a href="/" className="flex items-center mb-4">
-              <img src="/images/aniverse-logo.svg" alt="AniVerse Logo" className="h-10 mr-2" />
-              <span className="text-2xl font-bold font-sans text-white">Ani<span className="text-accent">Verse</span></span>
+              <img src="/images/aniverse-logo.svg" alt="aniverse Logo" className="h-10 mr-2" />
+              <span className="text-2xl font-bold font-sans text-white">ani<span className="text-accent">verse</span></span>
             </a>
             <p className="text-gray-400 mb-4">Your gateway to the best anime experience online. Watch high-quality anime anytime, anywhere.</p>
             <div className="flex space-x-4">
@@ -97,7 +97,7 @@ export default function Footer() {
         </div>
         
         <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-500 text-sm mb-4 md:mb-0">© 2023 AniVerse. All rights reserved.</p>
+          <p className="text-gray-500 text-sm mb-4 md:mb-0">© 2025 aniverse. All rights reserved.</p>
           <div className="flex space-x-4">
             <a href="/terms" className="text-gray-500 hover:text-white text-sm transition duration-200">Terms</a>
             <a href="/privacy" className="text-gray-500 hover:text-white text-sm transition duration-200">Privacy</a>
