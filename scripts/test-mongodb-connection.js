@@ -9,10 +9,10 @@
 const mongoose = require('mongoose');
 
 // Get MongoDB connection details from environment variables with fallbacks
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/animeverse';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/aniverse';
 const MONGODB_USER = process.env.MONGODB_USER;
 const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD;
-const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME || 'animeverse';
+const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME || 'aniverse';
 
 async function testMongoDBConnection() {
   console.log('Testing MongoDB connection...');

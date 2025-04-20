@@ -1,4 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <!-- Background (optional, transparent for now) -->
+  <rect width="600" height="600" fill="transparent"/>
+  
   <!-- Character face/head outline -->
   <path d="M300,100 C360,100 410,150 420,210 C430,270 420,340 380,380 C340,420 260,420 220,380 C180,340 170,270 180,210 C190,150 240,100 300,100 Z" fill="#E46E43" stroke="#1F333D" stroke-width="10"/>
   

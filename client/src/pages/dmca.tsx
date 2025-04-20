@@ -5,14 +5,14 @@ export default function DMCA() {
       
       <div className="prose prose-lg dark:prose-invert max-w-none">
         <p className="lead">
-          AnimeVerse respects the intellectual property rights of others and expects its users to do the same. 
+          aniverse respects the intellectual property rights of others and expects its users to do the same. 
           In accordance with the Digital Millennium Copyright Act of 1998 ("DMCA"), we have established the following 
           policy to address claims of copyright infringement.
         </p>
         
         <h2>1. Reporting Copyright Infringement</h2>
         <p>
-          If you believe that content available on or through AnimeVerse's services infringes one or more of your copyrights, 
+          If you believe that content available on or through aniverse's services infringes one or more of your copyrights, 
           please submit a written notification ("DMCA Notice") containing the following information:
         </p>
         <ol>
@@ -48,10 +48,10 @@ export default function DMCA() {
           DMCA Notices can be sent to our designated copyright agent at:
         </p>
         <p>
-          Email: dmca@animeverse.com<br />
+          Email: dmca@aniverse.com<br />
           Subject Line: "DMCA Notice"<br />
           Mailing Address:<br />
-          AnimeVerse Copyright Agent<br />
+          aniverse Copyright Agent<br />
           123 Anime Street<br />
           Tokyo, Japan 100-0001
         </p>
@@ -89,7 +89,7 @@ export default function DMCA() {
         
         <h2>5. Modifications to Policy</h2>
         <p>
-          AnimeVerse reserves the right to modify this DMCA Policy at any time. Changes will be effective upon posting 
+          aniverse reserves the right to modify this DMCA Policy at any time. Changes will be effective upon posting 
           to the website.
         </p>
         
