@@ -3,11 +3,12 @@ import ReactPlayer from 'react-player';
 import { 
   Play, Pause, Volume2, VolumeX, Settings, Maximize, 
   Minimize, CaptionsOff, ChevronRight, ChevronLeft,
-  RotateCcw, Smartphone
+  RotateCcw, Smartphone, X
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Slider } from '@/components/ui/slider';
 import screenfull from 'screenfull';
+import { saveWatchProgress, getWatchProgress, formatTime, calculatePercentWatched } from '@/lib/watch-progress';
 
 // Define custom interfaces for screen orientation
 type OrientationLockType = 'any' | 'natural' | 'landscape' | 'portrait' | 'portrait-primary' | 'portrait-secondary' | 'landscape-primary' | 'landscape-secondary';
@@ -26,6 +27,9 @@ type VideoPlayerProps = {
   title: string;
   isFullscreen: boolean;
   onFullscreenToggle: () => void;
+  episodeId: string;
+  animeId: string;
+  episodeNumber: number;
 };
 
 export default function VideoPlayer({ 
@@ -33,7 +37,10 @@ export default function VideoPlayer({
   thumbnail, 
   title, 
   isFullscreen, 
-  onFullscreenToggle 
+  onFullscreenToggle,
+  episodeId,
+  animeId,
+  episodeNumber
 }: VideoPlayerProps) {
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
@@ -45,9 +52,12 @@ export default function VideoPlayer({
   const [isRealFullscreen, setIsRealFullscreen] = useState(false);
   const [isRotated, setIsRotated] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showResumePrompt, setShowResumePrompt] = useState(false);
+  const [savedProgress, setSavedProgress] = useState<number | null>(null);
   const playerRef = useRef<ReactPlayer>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const progressSaveIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Detect mobile device
   useEffect(() => {
@@ -57,6 +67,47 @@ export default function VideoPlayer({
     };
     setIsMobile(checkMobile());
   }, []);
+  
+  // Check if there's saved progress when component mounts
+  useEffect(() => {
+    // Only check for saved progress if we have an episode ID
+    if (episodeId) {
+      const progress = getWatchProgress(episodeId);
+      if (progress && progress.position > 5 && progress.position < progress.duration - 10) {
+        setSavedProgress(progress.position);
+        setShowResumePrompt(true);
+      }
+    }
+  }, [episodeId]);
+  
+  // Save watch progress periodically
+  useEffect(() => {
+    if (playing && duration > 0 && !seeking) {
+      // Start interval to save progress every 5 seconds
+      progressSaveIntervalRef.current = setInterval(() => {
+        if (playerRef.current) {
+          const currentPosition = playerRef.current.getCurrentTime();
+          
+          // Save the current watch position
+          saveWatchProgress({
+            episodeId,
+            animeId, 
+            title,
+            position: currentPosition,
+            duration,
+            thumbnailUrl: thumbnail,
+            episodeNumber
+          });
+        }
+      }, 5000);
+    }
+    
+    return () => {
+      if (progressSaveIntervalRef.current) {
+        clearInterval(progressSaveIntervalRef.current);
+      }
+    };
+  }, [playing, duration, seeking, episodeId, animeId, title, thumbnail, episodeNumber]);
 
   // Handle fullscreen changes
   useEffect(() => {
@@ -251,6 +302,21 @@ export default function VideoPlayer({
       }
     }
   };
+  
+  // Handle resuming playback from saved position
+  const handleResumePlayback = () => {
+    if (savedProgress && playerRef.current) {
+      playerRef.current.seekTo(savedProgress);
+      setPlaying(true);
+    }
+    setShowResumePrompt(false);
+  };
+  
+  // Handle starting from beginning (skip saved position)
+  const handlePlayFromBeginning = () => {
+    setPlaying(true);
+    setShowResumePrompt(false);
+  };
 
   return (
     <div 
@@ -263,6 +329,42 @@ export default function VideoPlayer({
         }
       )}
     >
+      {/* Resume Prompt Overlay */}
+      {showResumePrompt && savedProgress && (
+        <div className="absolute inset-0 z-10 bg-black bg-opacity-70 flex items-center justify-center">
+          <div className="bg-gray-900 p-6 rounded-lg max-w-md w-full mx-4 border border-gray-700">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-medium text-white">Resume Playback</h3>
+              <button 
+                onClick={() => setShowResumePrompt(false)}
+                className="text-gray-400 hover:text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            
+            <p className="text-gray-300 mb-6">
+              {`You were watching this episode at ${formatTime(savedProgress)}. Would you like to resume where you left off?`}
+            </p>
+            
+            <div className="flex space-x-4">
+              <button
+                onClick={handlePlayFromBeginning}
+                className="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md transition-colors"
+              >
+                Start from Beginning
+              </button>
+              <button
+                onClick={handleResumePlayback}
+                className="flex-1 px-4 py-2 bg-accent hover:bg-accent/90 text-white rounded-md transition-colors"
+              >
+                Resume
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
       <ReactPlayer
         ref={playerRef}
         url={videoUrl}
