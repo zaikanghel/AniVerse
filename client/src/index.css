@@ -2,6 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Disable right-click menu and user-select on video player elements */
+.video-container {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Apply these styles to video elements within the player */
+.video-container video {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  pointer-events: auto !important; /* Allow clicks for play/pause */
+}
+
+/* Prevent right-click on video */
+.video-container video::-webkit-media-controls-enclosure {
+  overflow: hidden;
+}
+
+.video-container video::-webkit-media-controls-panel {
+  width: calc(100% + 30px);
+}
+
+/* Hide download button in media controls */
+.video-container video::-webkit-media-controls-overflow-button,
+.video-container video::-webkit-media-controls-download-button {
+  display: none;
+}
+
 @layer base {
   * {
     @apply border-border;

@@ -138,6 +138,28 @@ export default function VideoPlayer({
       }
     };
   }, []);
+  
+  // Disable right-click download on video elements
+  useEffect(() => {
+    // Function to disable context menu on video elements
+    const disableVideoContextMenu = (e: MouseEvent) => {
+      const target = e.target as Element;
+      if (target.tagName === 'VIDEO' || 
+          target.closest('.video-container') || 
+          target.closest('.react-player')) {
+        e.preventDefault();
+        return false;
+      }
+    };
+    
+    // Add global event listener
+    document.addEventListener('contextmenu', disableVideoContextMenu);
+    
+    // Cleanup when component unmounts
+    return () => {
+      document.removeEventListener('contextmenu', disableVideoContextMenu);
+    };
+  }, []);
 
   // Handle fullscreen changes
   useEffect(() => {
@@ -531,6 +553,7 @@ export default function VideoPlayer({
           "fixed inset-0 z-50 bg-black": isRealFullscreen 
         }
       )}
+      onContextMenu={(e) => e.preventDefault()} // Prevent right-click menu to disable download options
     >
       {/* Skip Intro Button */}
       {showSkipIntro && (
@@ -624,6 +647,16 @@ export default function VideoPlayer({
         muted={muted}
         onProgress={handleProgress}
         onDuration={handleDuration}
+        // Disable downloads and context menu for video element
+        config={{
+          file: {
+            attributes: {
+              controlsList: "nodownload nofullscreen",
+              disablePictureInPicture: true,
+              onContextMenu: (e: React.MouseEvent) => e.preventDefault()
+            }
+          }
+        }}
         onReady={() => {
           console.log('ReactPlayer is ready');
           
