@@ -1,4 +1,4 @@
-interface WatchProgress {
+export interface WatchProgress {
   episodeId: string;
   animeId: string;
   title: string;

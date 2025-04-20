@@ -94,6 +94,9 @@ export default function Watch({ id }: WatchProps) {
             title={`${anime.title} - Episode ${episode.number}`}
             isFullscreen={isFullscreen}
             onFullscreenToggle={() => setIsFullscreen(!isFullscreen)}
+            episodeId={id}
+            animeId={episode.animeId}
+            episodeNumber={episode.number}
           />
           
           {!isFullscreen && (

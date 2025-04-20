@@ -5,6 +5,7 @@ import TrendingAnime from '@/components/trending-anime';
 import RecentlyAdded from '@/components/recently-added';
 import TopRated from '@/components/top-rated';
 import AnimeCTA from '@/components/anime-cta';
+import ContinueWatching from '@/components/continue-watching';
 
 export default function Home() {
   // Scroll to top on mount
@@ -15,6 +16,9 @@ export default function Home() {
   return (
     <main className="pt-20">
       <HeroSlider />
+      <div className="container mx-auto px-4 py-8">
+        <ContinueWatching />
+      </div>
       <GenreFilter />
       <TrendingAnime />
       <RecentlyAdded />
