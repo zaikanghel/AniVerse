@@ -18,6 +18,12 @@ import SearchOverlay from "@/components/search-overlay";
 import { useState } from "react";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/lib/protected-route";
+import FAQ from "@/pages/faq";
+import Contact from "@/pages/contact";
+import TermsOfService from "@/pages/terms";
+import PrivacyPolicy from "@/pages/privacy";
+import DMCA from "@/pages/dmca";
+import CookiePolicy from "@/pages/cookies";
 
 function Router() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -44,6 +50,12 @@ function Router() {
         <Route path="/recently" component={RecentlyAdded} />
         <ProtectedRoute path="/favorites" component={Favorites} />
         <ProtectedRoute path="/admin" component={AdminPage} requireAdmin={true} />
+        <Route path="/faq" component={FAQ} />
+        <Route path="/contact" component={Contact} />
+        <Route path="/terms" component={TermsOfService} />
+        <Route path="/privacy" component={PrivacyPolicy} />
+        <Route path="/dmca" component={DMCA} />
+        <Route path="/cookies" component={CookiePolicy} />
         <Route component={NotFound} />
       </Switch>
       <Footer />

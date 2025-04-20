@@ -64,10 +64,10 @@ export async function connectDB() {
     });
     
     return true;
-  } catch (error) {
+  } catch (error: any) {
     isMongoConnected = false;
     log(`MongoDB connection error: ${error}`, 'mongodb');
-    throw new Error(`Failed to connect to MongoDB: ${error.message}`);
+    throw new Error(`Failed to connect to MongoDB: ${error.message || String(error)}`);
   }
 }
 
@@ -76,7 +76,7 @@ export async function disconnectDB() {
     await mongoose.disconnect();
     log('Disconnected from MongoDB', 'mongodb');
     return true;
-  } catch (error) {
+  } catch (error: any) {
     log(`MongoDB disconnect error: ${error}`, 'mongodb');
     return false;
   }
