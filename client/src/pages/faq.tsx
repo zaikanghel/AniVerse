@@ -2,7 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 export default function FAQ() {
   return (
-    <main className="container mx-auto px-4 py-10">
+    <main className="container mx-auto px-4 pt-24 pb-10">
       <h1 className="text-3xl font-bold mb-6">Frequently Asked Questions</h1>
       
       <div className="mb-12">

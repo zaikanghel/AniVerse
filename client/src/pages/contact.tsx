@@ -29,7 +29,7 @@ export default function ContactUs() {
   };
 
   return (
-    <main className="container mx-auto px-4 py-10">
+    <main className="container mx-auto px-4 pt-24 pb-10">
       <h1 className="text-3xl font-bold mb-6">Contact Us</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">

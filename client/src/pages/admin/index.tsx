@@ -45,7 +45,7 @@ export default function AdminPage() {
   // The admin check is now done in the ProtectedRoute component
 
   return (
-    <div className="container mx-auto px-4 py-28 min-h-screen">
+    <div className="container mx-auto px-4 pt-24 pb-10 min-h-screen">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 space-y-4 md:space-y-0">
         <div className="flex items-center">
           <div className="bg-accent/10 p-3 rounded-lg mr-4">
@@ -57,7 +57,7 @@ export default function AdminPage() {
           </div>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 w-full md:w-auto">
           <Card className="bg-purple-900/20 border-purple-800">
             <CardContent className="p-4 flex items-center justify-between">
               <div>
@@ -130,40 +130,40 @@ export default function AdminPage() {
       
       <div className="bg-gray-800/60 rounded-lg shadow-lg border border-gray-700">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="border-b border-gray-700">
-            <TabsList className="h-auto bg-transparent p-0">
+          <div className="border-b border-gray-700 overflow-x-auto">
+            <TabsList className="h-auto bg-transparent p-0 flex flex-nowrap min-w-max">
               <TabsTrigger 
                 value="anime" 
-                className="flex items-center gap-2 data-[state=active]:bg-accent/20 data-[state=active]:text-accent data-[state=active]:shadow-none rounded-none py-4 px-6"
+                className="flex items-center gap-2 data-[state=active]:bg-accent/20 data-[state=active]:text-accent data-[state=active]:shadow-none rounded-none py-4 px-4 sm:px-6"
               >
                 <Film className="h-4 w-4" />
-                <span>Anime</span>
+                <span className="whitespace-nowrap">Anime</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="episodes" 
-                className="flex items-center gap-2 data-[state=active]:bg-accent/20 data-[state=active]:text-accent data-[state=active]:shadow-none rounded-none py-4 px-6"
+                className="flex items-center gap-2 data-[state=active]:bg-accent/20 data-[state=active]:text-accent data-[state=active]:shadow-none rounded-none py-4 px-4 sm:px-6"
               >
                 <LayoutList className="h-4 w-4" />
-                <span>Episodes</span>
+                <span className="whitespace-nowrap">Episodes</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="genres" 
-                className="flex items-center gap-2 data-[state=active]:bg-accent/20 data-[state=active]:text-accent data-[state=active]:shadow-none rounded-none py-4 px-6"
+                className="flex items-center gap-2 data-[state=active]:bg-accent/20 data-[state=active]:text-accent data-[state=active]:shadow-none rounded-none py-4 px-4 sm:px-6"
               >
                 <Tag className="h-4 w-4" />
-                <span>Genres</span>
+                <span className="whitespace-nowrap">Genres</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="users" 
-                className="flex items-center gap-2 data-[state=active]:bg-accent/20 data-[state=active]:text-accent data-[state=active]:shadow-none rounded-none py-4 px-6"
+                className="flex items-center gap-2 data-[state=active]:bg-accent/20 data-[state=active]:text-accent data-[state=active]:shadow-none rounded-none py-4 px-4 sm:px-6"
               >
                 <Users className="h-4 w-4" />
-                <span>Users</span>
+                <span className="whitespace-nowrap">Users</span>
               </TabsTrigger>
             </TabsList>
           </div>
           
-          <div className="p-6">
+          <div className="p-3 sm:p-4 md:p-6">
             <TabsContent value="anime" className="mt-0">
               <AnimeManagement />
             </TabsContent>
