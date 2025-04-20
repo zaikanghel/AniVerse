@@ -112,7 +112,10 @@ export default function Explore() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {sortedAnimes.map((anime) => (
               <div key={anime.id} className="block cursor-pointer" onClick={() => window.location.href = `/anime/${anime.id}`}>
-                <AnimeCard anime={anime} />
+                <AnimeCard anime={{
+                  ...anime,
+                  id: anime.id.toString() // Convert id to string
+                }} />
               </div>
             ))}
           </div>
