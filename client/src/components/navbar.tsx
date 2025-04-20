@@ -37,8 +37,8 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-950 bg-opacity-90 backdrop-blur-md border-b border-gray-800">
-      <div className="container mx-auto px-4 py-3">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-950 bg-opacity-95 backdrop-blur-md border-b border-gray-800 shadow-lg">
+      <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
