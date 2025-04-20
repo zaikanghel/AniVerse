@@ -54,6 +54,7 @@ export default function VideoPlayer({
   const [isMobile, setIsMobile] = useState(false);
   const [showResumePrompt, setShowResumePrompt] = useState(false);
   const [savedProgress, setSavedProgress] = useState<number | null>(null);
+  const [hasAutoSeeked, setHasAutoSeeked] = useState(false);
   const playerRef = useRef<ReactPlayer>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -70,6 +71,9 @@ export default function VideoPlayer({
   
   // Check if there's saved progress when component mounts
   useEffect(() => {
+    // Reset auto-seek flag when episode changes
+    setHasAutoSeeked(false);
+    
     // Only check for saved progress if we have an episode ID
     if (episodeId) {
       const progress = getWatchProgress(episodeId);
@@ -307,6 +311,9 @@ export default function VideoPlayer({
   
   // Handle resuming playback from saved position
   const handleResumePlayback = () => {
+    // Set hasAutoSeeked to true to prevent onReady auto-seeking
+    setHasAutoSeeked(true);
+    
     if (savedProgress && playerRef.current) {
       console.log('Attempting to resume at position:', savedProgress);
       
@@ -347,6 +354,9 @@ export default function VideoPlayer({
   
   // Handle starting from beginning (skip saved position)
   const handlePlayFromBeginning = () => {
+    // Set hasAutoSeeked to true to prevent onReady auto-seeking
+    setHasAutoSeeked(true);
+    
     // First hide the resume prompt
     setShowResumePrompt(false);
     
@@ -380,7 +390,11 @@ export default function VideoPlayer({
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-medium text-white">Resume Playback</h3>
               <button 
-                onClick={() => setShowResumePrompt(false)}
+                onClick={() => {
+                  setShowResumePrompt(false);
+                  setHasAutoSeeked(true); // Prevent auto-seeking after closing
+                  setPlaying(true); // Start playing from current position
+                }}
                 className="text-gray-400 hover:text-white"
               >
                 <X className="h-5 w-5" />
@@ -422,9 +436,13 @@ export default function VideoPlayer({
         onReady={() => {
           console.log('ReactPlayer is ready');
           
-          // Only auto-seek if we're not showing the resume prompt (already handled by user choice)
-          if (savedProgress && !showResumePrompt && playerRef.current) {
+          // Only auto-seek if we have saved progress, aren't showing the resume prompt, 
+          // haven't already seeked, and have a valid player ref
+          if (savedProgress && !showResumePrompt && !hasAutoSeeked && playerRef.current) {
             console.log('Auto seeking to saved position on ready:', savedProgress);
+            
+            // Mark that we've performed the auto-seek to prevent multiple seeks
+            setHasAutoSeeked(true);
             
             // Use a small timeout to ensure the player is fully ready
             setTimeout(() => {
