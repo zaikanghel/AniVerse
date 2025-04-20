@@ -310,32 +310,56 @@ export default function VideoPlayer({
     if (savedProgress && playerRef.current) {
       console.log('Attempting to resume at position:', savedProgress);
       
+      // First make sure we dismiss the resume prompt
+      setShowResumePrompt(false);
+      
+      // Then set playing to true so video starts playing immediately
+      setPlaying(true);
+      
       // Ensure player is ready before seeking
       if (playerRef.current.getInternalPlayer()) {
         console.log('Internal player ready, seeking to position');
-        playerRef.current.seekTo(savedProgress, 'seconds');
+        
+        // Use setTimeout to ensure seeking happens after player is fully initialized
+        setTimeout(() => {
+          if (playerRef.current) {
+            playerRef.current.seekTo(savedProgress, 'seconds');
+            console.log('Seeking complete, video should now be playing');
+          }
+        }, 100);
       } else {
         console.log('Internal player not ready, using timeout');
-        // If player not ready, use a timeout to try again
+        // If player not ready, use a longer timeout to try again
         setTimeout(() => {
           console.log('Retrying seek after timeout');
           if (playerRef.current) {
             playerRef.current.seekTo(savedProgress, 'seconds');
+            console.log('Delayed seeking complete, video should now be playing');
           }
         }, 1000);
       }
-      
-      setPlaying(true);
     } else {
       console.log('No saved progress or player ref available');
+      setShowResumePrompt(false);
+      setPlaying(true);
     }
-    setShowResumePrompt(false);
   };
   
   // Handle starting from beginning (skip saved position)
   const handlePlayFromBeginning = () => {
-    setPlaying(true);
+    // First hide the resume prompt
     setShowResumePrompt(false);
+    
+    // Seek to the beginning
+    if (playerRef.current) {
+      playerRef.current.seekTo(0, 'seconds');
+    }
+    
+    // Start playing after a small delay to ensure player is initialized
+    setTimeout(() => {
+      setPlaying(true);
+      console.log('Starting playback from beginning');
+    }, 100);
   };
 
   return (
@@ -397,9 +421,23 @@ export default function VideoPlayer({
         onDuration={handleDuration}
         onReady={() => {
           console.log('ReactPlayer is ready');
+          
+          // Only auto-seek if we're not showing the resume prompt (already handled by user choice)
           if (savedProgress && !showResumePrompt && playerRef.current) {
             console.log('Auto seeking to saved position on ready:', savedProgress);
-            playerRef.current.seekTo(savedProgress, 'seconds');
+            
+            // Use a small timeout to ensure the player is fully ready
+            setTimeout(() => {
+              if (playerRef.current) {
+                playerRef.current.seekTo(savedProgress, 'seconds');
+                console.log('Auto-seeking complete');
+                // Ensure video plays after seeking if it should be playing
+                if (playing) {
+                  console.log('Ensuring video is playing after auto-seek');
+                  setPlaying(true);
+                }
+              }
+            }, 200);
           }
         }}
         style={{ backgroundColor: '#000' }}
