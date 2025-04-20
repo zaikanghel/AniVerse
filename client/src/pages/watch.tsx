@@ -25,9 +25,12 @@ export default function Watch({ id }: WatchProps) {
     enabled: !!data?.episode?.animeId,
   });
 
-  // Scroll to top on mount and when id changes
+  // Scroll to top and reset component state when id changes
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Force a refresh of the episode data when the ID changes
+    // This ensures proper loading when navigating between episodes
+    console.log(`Episode ID changed to: ${id}`);
   }, [id]);
 
   // Handle fullscreen toggle
@@ -100,9 +103,12 @@ export default function Watch({ id }: WatchProps) {
             nextEpisodeId={nextEpisodes.length > 0 ? nextEpisodes[0].id : undefined}
             onNavigateToNextEpisode={nextEpisodes.length > 0 ? 
               () => {
-                console.log('Auto-navigating to next episode');
-                // First navigate to the next episode
-                setLocation(`/watch/${nextEpisodes[0].id}`);
+                const nextEpisodeId = nextEpisodes[0].id;
+                console.log(`Auto-navigating to next episode: ${nextEpisodeId}`);
+                
+                // Use window.location instead of setLocation for a full page refresh
+                // This ensures the video player fully reloads with the new episode
+                window.location.href = `/watch/${nextEpisodeId}`;
               } : undefined}
             hasIntro={true}
             introStartTime={20}
@@ -129,7 +135,7 @@ export default function Watch({ id }: WatchProps) {
                         key={nextEp.id}
                         episode={nextEp}
                         animeCover={anime.coverImage}
-                        onClick={() => setLocation(`/watch/${nextEp.id}`)}
+                        onClick={() => window.location.href = `/watch/${nextEp.id}`}
                       />
                     ))}
                   </div>

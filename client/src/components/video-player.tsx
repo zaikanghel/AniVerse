@@ -614,6 +614,7 @@ export default function VideoPlayer({
       )}
       
       <ReactPlayer
+        key={videoUrl} // This forces the component to remount when videoUrl changes
         ref={playerRef}
         url={videoUrl}
         width="100%"
