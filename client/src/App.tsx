@@ -25,6 +25,7 @@ import TermsOfService from "@/pages/terms";
 import PrivacyPolicy from "@/pages/privacy";
 import DMCA from "@/pages/dmca";
 import CookiePolicy from "@/pages/cookies";
+import MonetagBanner from "@/components/monetag-banner"; // Add this at the top
 
 function Router() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -61,6 +62,7 @@ function Router() {
       </Switch>
       <Footer />
       <Toaster />
+      <MonetagBanner /> {/* <-- Add this line */}
     </>
   );
 }
