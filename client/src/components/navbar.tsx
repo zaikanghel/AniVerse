@@ -38,13 +38,13 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-950 bg-opacity-95 backdrop-blur-md border-b border-gray-800 shadow-lg">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border shadow-lg backdrop-blur-md">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
               <div className="h-10 mr-2 flex items-center">
-                <span className="text-2xl font-bold font-sans text-white">ANI<span className="text-accent">VERSE</span></span>
+                <span className="text-2xl font-bold font-sans text-foreground">ANI<span className="text-accent">VERSE</span></span>
               </div>
             </Link>
             <div className="hidden md:flex ml-10 space-x-8">
@@ -60,7 +60,7 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
             <Button 
               variant="ghost" 
               size="icon" 
-              className="p-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-full"
+              className="p-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-full"
               onClick={onSearchClick}
             >
               <Search className="h-5 w-5" />
@@ -71,7 +71,7 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="flex items-center gap-2 border-gray-700 bg-gray-900 hover:bg-gray-800">
+                  <Button variant="outline" size="sm" className="flex items-center gap-2 border-border bg-secondary hover:bg-secondary/80">
                     <User className="h-4 w-4" />
                     <span className="hidden sm:inline">{user.username}</span>
                   </Button>
@@ -94,7 +94,7 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="text-red-500 focus:text-red-500 cursor-pointer">
+                  <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive cursor-pointer">
                     <LogOut className="h-4 w-4 mr-2" />
                     <span>Logout</span>
                   </DropdownMenuItem>
@@ -116,7 +116,7 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
             <Button 
               variant="ghost"
               size="icon"
-              className="md:hidden p-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-full"
+              className="md:hidden p-2 text-muted-foreground hover:text-foreground hover:bg-secondary rounded-full"
               onClick={toggleMobileMenu}
             >
               <Menu className="h-5 w-5" />
@@ -126,7 +126,7 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
       </div>
       
       {/* Mobile Menu */}
-      <div className={cn("md:hidden bg-gray-900 py-4 px-4 border-t border-gray-800", {
+      <div className={cn("md:hidden bg-card py-4 px-4 border-t border-border", {
         'hidden': !isMobileMenuOpen
       })}>
         <div className="flex flex-col space-y-3">
@@ -137,9 +137,9 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
           {user && <MobileNavLink href="/favorites" label="My Favorites" icon={<Heart className="h-4 w-4 mr-2" />} onClick={() => setMobileMenuOpen(false)} />}
           {user?.isAdmin && <MobileNavLink href="/admin" label="Admin Panel" icon={<Shield className="h-4 w-4 mr-2" />} onClick={() => setMobileMenuOpen(false)} />}
           
-          <div className="pt-2 mt-2 border-t border-gray-800 flex flex-col space-y-3">
+          <div className="pt-2 mt-2 border-t border-border flex flex-col space-y-3">
             <div className="flex items-center justify-between pt-2">
-              <span className="text-gray-300">Toggle Theme</span>
+              <span className="text-muted-foreground">Toggle Theme</span>
               <ThemeToggle iconOnly={false} />
             </div>
             
@@ -175,9 +175,9 @@ function NavLink({ href, label, icon }: NavLinkProps) {
     <Link 
       href={href} 
       className={cn(
-        "relative flex items-center text-gray-300 hover:text-white transition duration-200 after:content-[''] after:absolute after:w-0 after:h-0.5 after:bottom-[-2px] after:left-0 after:bg-accent hover:after:w-full after:transition-[width] after:duration-300", 
+        "relative flex items-center text-muted-foreground hover:text-foreground transition duration-200 after:content-[''] after:absolute after:w-0 after:h-0.5 after:bottom-[-2px] after:left-0 after:bg-accent hover:after:w-full after:transition-[width] after:duration-300", 
         {
-          "text-white after:w-full": isActive
+          "text-foreground after:w-full": isActive
         }
       )}
     >
@@ -200,9 +200,9 @@ function MobileNavLink({ href, label, icon, onClick }: MobileNavLinkProps) {
       href={href} 
       onClick={onClick}
       className={cn(
-        "flex items-center text-gray-300 hover:text-white transition duration-200 py-2", 
+        "flex items-center text-muted-foreground hover:text-foreground transition duration-200 py-2", 
         {
-          "text-white": isActive
+          "text-foreground": isActive
         }
       )}
     >
