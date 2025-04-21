@@ -17,6 +17,7 @@ import AdminPage from "@/pages/admin";
 import SearchOverlay from "@/components/search-overlay";
 import { useState } from "react";
 import { AuthProvider } from "@/hooks/use-auth";
+import { ThemeProvider } from "@/hooks/use-theme";
 import { ProtectedRoute } from "@/lib/protected-route";
 import FAQ from "@/pages/faq";
 import Contact from "@/pages/contact";
@@ -67,9 +68,11 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Router />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <Router />
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
