@@ -250,7 +250,7 @@ export default function UserManagement() {
                   <TableRow key={user.id} className="border-gray-700 hover:bg-gray-800/30">
                     <TableCell className="font-medium text-gray-400">{user.id}</TableCell>
                     <TableCell className="font-medium">{user.username}</TableCell>
-                    <TableCell className="text-gray-400">N/A</TableCell>
+                    <TableCell className="text-gray-400">{user.email || 'N/A'}</TableCell>
                     <TableCell className="text-gray-400">{formatDate(user.createdAt)}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-3">
@@ -363,12 +363,20 @@ export default function UserManagement() {
                   ? "Admin users have full access to manage all content on the platform." 
                   : "Granting admin status will give this user full control over the platform."}
               </p>
-              <p className="font-medium mt-2">
-                <span className="text-white">Username: </span>
-                <span className={selectedUser?.isAdmin ? "text-red-400" : "text-accent"}>
-                  {selectedUser?.username}
-                </span>
-              </p>
+              <div className="space-y-1">
+                <p className="font-medium">
+                  <span className="text-white">Username: </span>
+                  <span className={selectedUser?.isAdmin ? "text-red-400" : "text-accent"}>
+                    {selectedUser?.username}
+                  </span>
+                </p>
+                <p className="font-medium">
+                  <span className="text-white">Email: </span>
+                  <span className="text-gray-400">
+                    {selectedUser?.email || 'N/A'}
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
 
