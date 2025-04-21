@@ -20,6 +20,39 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- Banner container -->
+<div id="monetag-banner" style="
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  text-align: center;
+  background: transparent;
+  pointer-events: none; /* Allow user interaction only with the ad, not the container */
+"></div>
+
+<!-- Monetag script -->
+<script>
+  (function(d, z, s) {
+    s.src = 'https://' + d + '/400/' + z;
+    s.onload = function() {
+      setTimeout(() => {
+        const injected = document.querySelector('body > div[style*="z-index"]');
+        const banner = document.getElementById('monetag-banner');
+        if (injected && banner) {
+          injected.style.margin = "0 auto";
+          banner.appendChild(injected);
+        }
+      }, 1500); // Wait to ensure Monetag finishes rendering
+    };
+    try {
+      (document.body || document.documentElement).appendChild(s);
+    } catch (e) {}
+  })('vemtoutcheeg.com', 9243065, document.createElement('script'));
+</script>
+    
     <script type="module" src="/src/main.tsx"></script>
     <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
     <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
