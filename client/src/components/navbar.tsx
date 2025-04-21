@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useToggle } from '@/hooks/use-toggle';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/use-auth';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -64,6 +65,8 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
             >
               <Search className="h-5 w-5" />
             </Button>
+            
+            <ThemeToggle iconOnly className="hidden sm:flex" />
             
             {user ? (
               <DropdownMenu>
@@ -134,8 +137,13 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
           {user && <MobileNavLink href="/favorites" label="My Favorites" icon={<Heart className="h-4 w-4 mr-2" />} onClick={() => setMobileMenuOpen(false)} />}
           {user?.isAdmin && <MobileNavLink href="/admin" label="Admin Panel" icon={<Shield className="h-4 w-4 mr-2" />} onClick={() => setMobileMenuOpen(false)} />}
           
-          {!user && (
-            <div className="pt-2 mt-2 border-t border-gray-800">
+          <div className="pt-2 mt-2 border-t border-gray-800 flex flex-col space-y-3">
+            <div className="flex items-center justify-between pt-2">
+              <span className="text-gray-300">Toggle Theme</span>
+              <ThemeToggle iconOnly={false} />
+            </div>
+            
+            {!user && (
               <Button 
                 className="w-full flex items-center justify-center bg-accent hover:bg-accent/90"
                 asChild
@@ -145,8 +153,8 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
                   <span>Sign In</span>
                 </Link>
               </Button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </nav>
