@@ -25,7 +25,7 @@ import TermsOfService from "@/pages/terms";
 import PrivacyPolicy from "@/pages/privacy";
 import DMCA from "@/pages/dmca";
 import CookiePolicy from "@/pages/cookies";
-import DaoAdBanner from "@/components/dao-ad-banner";
+import ExoStickyBanner from "@/components/ExoStickyBanner";
 
 function Router() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -62,7 +62,7 @@ function Router() {
       </Switch>
       <Footer />
       <Toaster />
-      <DaoAdBanner /> {/* <-- Add this line */}
+      <ExoStickyBanner /> {/* <-- Add this line */}
     </>
   );
 }
