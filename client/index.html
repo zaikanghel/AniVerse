@@ -27,9 +27,30 @@
 <body>
   <div id="root"></div>
 
+  <div id="s57379p7797"></div>
+  
   <!-- Your app -->
   <script type="module" src="/src/main.tsx"></script>
 
+  <script>
+  (function (){
+      function dnaStart(){
+          window.dnObj5579 = new DaoNativeTeaser({"sourceId":57379,"fontSize":"normal"});
+          window.dnObj5579.add("s57379p7797", {"count":3,"titleColor":"#868585","textColor":"#868585","hoverColor":"#2b397b","cols":3,"mobCount":2,"imageRatio":1.333333,"imageFillMode":"fill"});
+          window.dnObj5579.run();
+      }
+      if(isExistObj()) return dnaStart();
+      let script = document.getElementById("d-na-scr-t")
+      if(!script)
+          ls("https://native-cdn.com/d-native-teaser.js?b=31", "d-na-scr-t", dnaStart);
+      else
+          return /loaded|complete/.test(document.readyState)||isExistObj() ? dnaStart() : script.addEventListener('load', dnaStart);
+
+      function isExistObj(){ return typeof DaoNativeTeaser === 'function';}
+      function ls(url,id,load){let d=document;let s=d.createElement('script'); s.id=id;s.src=url;s.async=true;s.onload=load; d.head.appendChild(s);}
+  })();
+  </script>
+  
   <!-- Optional dev banner -->
   <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
 </body>
