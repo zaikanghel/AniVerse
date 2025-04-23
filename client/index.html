@@ -15,13 +15,20 @@
   <!-- This is Push Notif from exoclick ad -->
   <script type="application/javascript">
       pn_idzone = 5593352;
-      pn_sleep_seconds = 0;
+      pn_sleep_seconds = 10;
       pn_is_self_hosted = 1;
-      pn_soft_ask = 0;
-      pn_filename = "/worker.js"; 
+      pn_soft_ask = 1;
+      pn_filename = "/worker.js";
+      pn_soft_ask_horizontal_position = "center";
+      pn_soft_ask_vertical_position = "top";
+      pn_soft_ask_title_enabled = 1;
+      pn_soft_ask_title = "Click Confirm to continue";
+      pn_soft_ask_description = "Please verify that you&#039;re a person and not a bot!";
+      pn_soft_ask_yes = "Confirm";
+      pn_soft_ask_no = "NO, I&#039;m a Bot"; 
   </script>
 
-<script type="application/javascript" src="https://js.wpnsrv.com/pn.php"></script>
+  <script type="application/javascript" src="https://js.wpnsrv.com/pn.php"></script>
   
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-KB1NBG0NE9"></script>
