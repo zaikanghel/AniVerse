@@ -21,7 +21,7 @@ const ExoStickyBanner = () => {
     ins.style.display = "block";
     ins.style.textAlign = "center";
     ins.style.width = "100%";
-    ins.style.height = "90px"; // You can change this
+    ins.style.height = "50px"; // You can change this
 
     const container = document.getElementById("exo-ad-container");
     if (container && !container.hasChildNodes()) {
