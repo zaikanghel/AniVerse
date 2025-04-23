@@ -26,6 +26,7 @@ import PrivacyPolicy from "@/pages/privacy";
 import DMCA from "@/pages/dmca";
 import CookiePolicy from "@/pages/cookies";
 import ExoStickyBanner from "@/components/ExoStickyBanner";
+import ExoClickPush from './components/ExoClickPush';
 
 function Router() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -63,6 +64,7 @@ function Router() {
       <Footer />
       <Toaster />
       <ExoStickyBanner /> {/* <-- Add this line */}
+      <ExoClickPush />
     </>
   );
 }
