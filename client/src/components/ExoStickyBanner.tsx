@@ -20,8 +20,6 @@ const ExoStickyBanner = () => {
     ins.setAttribute("data-sub", "123450000");
     ins.style.display = "block";
     ins.style.textAlign = "center";
-    ins.style.width = "100%";
-    ins.style.height = "50px"; // You can change this
 
     const container = document.getElementById("exo-ad-container");
     if (container && !container.hasChildNodes()) {
@@ -42,7 +40,7 @@ const ExoStickyBanner = () => {
         bottom: 0,
         width: "100%",
         zIndex: 9999,
-        backgroundColor: "#fff",
+        backgroundColor: "transparent",
         padding: "10px 0",
         boxShadow: "0 -2px 10px rgba(0,0,0,0.1)",
         textAlign: "center",
