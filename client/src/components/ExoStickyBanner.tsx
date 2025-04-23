@@ -40,7 +40,7 @@ const ExoStickyBanner = () => {
         bottom: 0,
         width: "100%",
         zIndex: 9999,
-        backgroundColor: "transparent",
+        backgroundColor: "#fff",
         padding: "10px 0",
         boxShadow: "0 -2px 10px rgba(0,0,0,0.1)",
         textAlign: "center",
